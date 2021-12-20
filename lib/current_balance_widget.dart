@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:intl/intl.dart';
+
+var currentcyFormatter = NumberFormat('#,##0', 'hu_HU');
 
 class CurrentBalanceWidget extends StatelessWidget {
   const CurrentBalanceWidget({
@@ -26,8 +29,9 @@ class CurrentBalanceWidget extends StatelessWidget {
               ),
               const Spacer(),
               AutoSizeText(
-                "$amount Ft",
-                style: const TextStyle(fontSize: 30.0),
+                "${currentcyFormatter.format(amount)} Ft",
+                style: const TextStyle(
+                    fontSize: 30.0, fontWeight: FontWeight.w700),
               ),
             ],
           ),
