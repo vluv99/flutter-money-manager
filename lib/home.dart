@@ -5,47 +5,63 @@ import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
+import 'bottom_navbar_widget.dart';
+
 var currentcyFormatter = NumberFormat('#,##0', 'hu_HU');
+int _currentAmount = 0;
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
+
+  /*currentAmount(List<Transaction> list) {
+    int res = 0;
+    for (var item in list) {
+      res += item.amount;
+    }
+    return res;
+  }*/
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.red,
-          title: const Text('MONGER - The money manager'),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Container(
-                margin: const EdgeInsets.fromLTRB(5, 40, 5, 40),
-                child: CurrentBalanceWidget(
-                  amount: 1000,
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: const Text("Your last transactions:",
-                    style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
-              ),
-              _Transactions()
-            ],
+          appBar: AppBar(
+            backgroundColor: Colors.red,
+            title: const Text('MONGER - The money manager'),
           ),
-        ),
-        floatingActionButton: FloatingActionButton(
+          body: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Container(
+                  margin: const EdgeInsets.fromLTRB(5, 40, 5, 40),
+                  child: CurrentBalanceWidget(
+                    amount: 1000,
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                  child: const Text("Your last transactions:",
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+                ),
+                _Transactions()
+              ],
+            ),
+          ),
+          bottomNavigationBar: BottomNavbarWidget(
+            index: 0,
+            //context: context,
+          )
+
+          /*floatingActionButton: FloatingActionButton(
             child: const Icon(Icons.add),
             backgroundColor: Colors.red,
             onPressed: () {
               print("pushed button");
-            }),
-      ),
+            }*/
+          ),
     );
   }
 
