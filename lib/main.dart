@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money_manager_app/add_transaction.dart';
 import 'package:money_manager_app/home.dart';
 import 'package:money_manager_app/list_transactions.dart';
 import 'package:money_manager_app/model/transaction_model.dart';
@@ -17,7 +18,11 @@ class MongerApp extends StatelessWidget {
     return ChangeNotifierProvider(
         //create: (context) => TransactionModel(), child: const HomePage());
         //create: (context) => TransactionModel(), child: const TransactionsPage());
+
+        //create: (context) => TransactionModel(),
+        //child: const TransactionDetailsPage());
+
         create: (context) => TransactionModel(),
-        child: const TransactionDetailsPage());
+        child: const AddTransaction());
   }
 }

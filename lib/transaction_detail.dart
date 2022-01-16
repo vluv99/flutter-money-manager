@@ -51,7 +51,7 @@ class TransactionDetailsPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
+              margin: EdgeInsets.fromLTRB(0, 5, 0, 20),
               alignment: Alignment.center,
               child: Padding(
                   padding: const EdgeInsets.all(10.0),
