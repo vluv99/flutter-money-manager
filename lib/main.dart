@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:money_manager_app/home.dart';
 import 'package:money_manager_app/list_transactions.dart';
 import 'package:money_manager_app/model/transaction_model.dart';
+import 'package:money_manager_app/transaction_detail.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -14,8 +15,9 @@ class MongerApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (context) => TransactionModel(), child: const HomePage());
-    //create: (context) => TransactionModel(),
-    //child: const TransactionsPage());
+        //create: (context) => TransactionModel(), child: const HomePage());
+        //create: (context) => TransactionModel(), child: const TransactionsPage());
+        create: (context) => TransactionModel(),
+        child: const TransactionDetailsPage());
   }
 }

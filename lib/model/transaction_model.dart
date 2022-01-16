@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class TransactionModel extends ChangeNotifier {
   final List<Transaction> _list = [
@@ -39,12 +40,29 @@ class TransactionModel extends ChangeNotifier {
   }*/
 
   UnmodifiableListView<Transaction> get list => UnmodifiableListView(_list);
+
+  // put this here, to try getting a single transaction fo the details page
+  Transaction getSingleTransaction(int amount, String name, DateTime date) {
+    for (var item in _list) {
+      if (item.amount == amount && item.name == name && item.date == date) {
+        return item;
+      }
+    }
+    return Transaction(amount: 0, name: "none", date: DateTime.now());
+  }
 }
 
 class Transaction {
   int amount = 0;
   String name = "";
   DateTime date = DateTime.now();
+  String note =
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+  LatLng place = LatLng(45.521563, -122.677433);
+  List<String> people = ['Peter'];
 
   Transaction({required this.amount, required this.name, required this.date});
+
+  // put this here, to try list people in the details
+  UnmodifiableListView<String> get list => UnmodifiableListView(people);
 }
