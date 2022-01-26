@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'bottom_navbar_widget.dart';
 import 'model/transaction_model.dart';
 
+var dateFormat = new DateFormat('yyyy.MM.dd HH:mm');
 var currentcyFormatter = NumberFormat('#,##0', 'hu_HU');
 
 class TransactionDetailsPage extends StatelessWidget {
@@ -79,7 +78,7 @@ class TransactionDetailsPage extends StatelessWidget {
                           : const Color(0xFF72d111) /*green*/),
                     ),
                   ),
-                  Text(transaction.date.toString(),
+                  Text(dateFormat.format(transaction.date).toString(),
                       style: const TextStyle(fontSize: 22)),
                 ],
               ),

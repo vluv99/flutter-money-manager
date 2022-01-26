@@ -13,29 +13,38 @@ class AddTransaction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.red,
-            title: const Text('MONGER - The money manager'),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.red,
+        title: const Text('MONGER - The money manager'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: TextFormField(
+          decoration: const InputDecoration(
+            hintText: 'Amount',
           ),
-          body: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                    child: const Text("Add a new transaction:",
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w700)),
-                  ),
-                  _InputForm()
-                ]),
-          ),
-          bottomNavigationBar: BottomNavbarWidget(
-            index: 3,
-          )),
+          autofocus: true,
+          keyboardType: TextInputType.number,
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+          validator: (String? value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter an amount';
+            }
+            return null;
+          },
+          style: TextStyle(fontSize: 40),
+        ),
+        //  Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        //Container(
+        //  margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+        //  child: const Text("Add a new transaction:",
+        //      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+        //),
+        //_InputForm()
+        //],
+        //),
+      ),
     );
   }
 
@@ -92,6 +101,10 @@ class AddTransaction extends StatelessWidget {
                     /*if (_formKey.currentState!.validate()) {
                   // Process data.
                 }*/
+                    model.addTransaction(Transaction(
+                        amount: 1, name: "HI", date: DateTime.now()));
+
+                    Navigator.pop(context);
                   },
                   child: const Text('Submit'),
                 ),

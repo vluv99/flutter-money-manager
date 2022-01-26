@@ -8,7 +8,7 @@ class TransactionModel extends ChangeNotifier {
     Transaction(
         amount: 56000,
         name: 'Starter bank amount',
-        date: DateTime(2021, 10, 23, 17, 00)),
+        date: DateTime(2021, 10, 01, 17, 00)),
     Transaction(
         amount: -8542,
         name: 'Spar Supermarket',
@@ -35,11 +35,27 @@ class TransactionModel extends ChangeNotifier {
         amount: -2073, name: 'Train', date: DateTime(2021, 12, 23, 15, 45))
   ];
 
-  /*orderList(List<Transaction> list) {
-    return list.sort((a, b) => a.date.compareTo(b.date));
-  }*/
+  int get currentAmount {
+    int amount = 0;
+    for (var item in _list) {
+      amount += item.amount;
+    }
+    return amount;
+  }
 
-  UnmodifiableListView<Transaction> get list => UnmodifiableListView(_list);
+  UnmodifiableListView<Transaction> get list {
+    var l = List<Transaction>.from(_list);
+    l.sort((a, b) {
+      return 1 - a.date.compareTo(b.date);
+    });
+
+    return UnmodifiableListView(l);
+  }
+
+  void addTransaction(Transaction trans) {
+    _list.add(trans);
+    notifyListeners();
+  }
 
   // put this here, to try getting a single transaction fo the details page
   Transaction getSingleTransaction(int amount, String name, DateTime date) {

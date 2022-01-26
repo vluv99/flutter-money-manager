@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:money_manager_app/current_balance_widget.dart';
+import 'package:money_manager_app/add_transaction.dart';
 import 'package:money_manager_app/model/transaction_model.dart';
 import 'package:money_manager_app/transaction_detail.dart';
 import 'package:provider/provider.dart';
@@ -8,19 +8,35 @@ import 'package:intl/date_symbol_data_local.dart';
 
 import 'bottom_navbar_widget.dart';
 
+import 'components/current_balance_widget.dart';
+import 'components/fancy_button_windget.dart';
+import 'components/transaction_card_widget.dart';
+import 'list_transactions.dart';
+
+var dateFormat = DateFormat('yyyy.MM.dd HH:mm');
 var currentcyFormatter = NumberFormat('#,##0', 'hu_HU');
 int _currentAmount = 0;
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
-  /*currentAmount(List<Transaction> list) {
-    int res = 0;
-    for (var item in list) {
-      res += item.amount;
-    }
-    return res;
-  }*/
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  initState() {
+    super.initState();
+    _controller = AnimationController(
+        duration: const Duration(milliseconds: 2000), vsync: this, value: 0.1);
+    _animation =
+        CurvedAnimation(parent: _controller, curve: Curves.bounceInOut);
+
+    _controller.forward();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,24 +51,53 @@ class HomePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
-              margin: const EdgeInsets.fromLTRB(5, 40, 5, 40),
-              child: CurrentBalanceWidget(
-                amount: 1000,
-              ),
-            ),
+                margin: const EdgeInsets.fromLTRB(5, 40, 5, 40),
+                child: ScaleTransition(
+                    scale: _animation,
+                    alignment: Alignment.center,
+                    child: Consumer<TransactionModel>(
+                      builder: (context, model, child) {
+                        return CurrentBalanceWidget(
+                          amount: model.currentAmount,
+                        );
+                      },
+                    ))),
             Container(
               margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: const Text("Your last transactions:",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
             ),
-            _Transactions()
+            _Transactions(),
+            const SizedBox(height: 30),
+            TextButton(
+                //text: 'See all ...',
+                child: const Text(
+                  "See all ...",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 18, /*fontWeight: FontWeight.w700*/
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const TransactionsPage()),
+                  );
+                })
           ],
         ),
       ),
-      bottomNavigationBar: const BottomNavbarWidget(
-        index: 0,
-        //context: context,
-      ),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            //print("Yey");
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const AddTransaction()),
+            );
+          },
+          backgroundColor: Colors.red,
+          child: Icon(Icons.add)),
     );
   }
 
@@ -63,53 +108,10 @@ class HomePage extends StatelessWidget {
         int count = model.list.length > 5 ? 5 : model.list.length;
         return Flexible(
           child: ListView.builder(
+              shrinkWrap: true,
               itemCount: count,
               itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  margin: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                  child: InkWell(
-                    child: Ink(
-                      decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(5)),
-                          color: (model.list[index].amount <= 0
-                              ? const Color(0xFFed5151) //red
-                              : const Color(0xFF72d111) /*green*/)),
-                      height: 60,
-                      padding: const EdgeInsets.all(8),
-                      //margin: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                      child: Column(children: [
-                        Row(children: [
-                          Text(model.list[index].name,
-                              style: const TextStyle(
-                                  color: Colors.white, fontSize: 18))
-                        ]),
-                        Expanded(
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Text('${model.list[index].date}',
-                                    style:
-                                        const TextStyle(color: Colors.white)),
-                                Text(
-                                    '${currentcyFormatter.format(model.list[index].amount)} Ft',
-                                    style: const TextStyle(color: Colors.white))
-                              ]),
-                        )
-                      ]),
-                    ),
-                    onTap: () {
-                      //print("Yey");
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                TransactionDetailsPage(t: model.list[index])),
-                      );
-                    },
-                  ),
-                );
+                return TransactionCardWidget(transaction: model.list[index]);
               }),
         );
       },
