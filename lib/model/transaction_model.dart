@@ -59,7 +59,7 @@ class Transaction {
   String note =
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
   LatLng place = LatLng(45.521563, -122.677433);
-  List<String> people = ['Peter'];
+  List<String> people = ['Peter', 'Bali', 'Pea'];
 
   Transaction({required this.amount, required this.name, required this.date});
 

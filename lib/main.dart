@@ -16,13 +16,20 @@ class MongerApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        //create: (context) => TransactionModel(), child: const HomePage());
-        //create: (context) => TransactionModel(), child: const TransactionsPage());
+      create: (context) => TransactionModel(),
+      child: const MaterialApp(
+        title: 'Navigation Basics',
+        home: HomePage(),
+      ),
+    );
 
-        //create: (context) => TransactionModel(),
-        //child: const TransactionDetailsPage());
+    //create: (context) => TransactionModel(), child: const HomePage());
+    //create: (context) => TransactionModel(), child: const TransactionsPage());
 
-        create: (context) => TransactionModel(),
-        child: const AddTransaction());
+    //create: (context) => TransactionModel(),
+    //child: const TransactionDetailsPage());
+
+    //create: (context) => TransactionModel(),
+    //child: const AddTransaction());
   }
 }
