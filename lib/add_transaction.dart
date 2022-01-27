@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'bottom_navbar_widget.dart';
 import 'model/transaction_model.dart';
 
+var dateFormat = DateFormat('yyyy.MM.dd HH:mm');
 var currentcyFormatter = NumberFormat('#,##0', 'hu_HU');
 
 class AddTransaction extends StatefulWidget {
@@ -20,6 +21,7 @@ class AddTransaction extends StatefulWidget {
 
 class _AddTransactionState extends State<AddTransaction> {
   TextEditingController _amountController = TextEditingController(text: "0");
+  TextEditingController _nameController = TextEditingController(text: "Expense on - " + dateFormat.format(DateTime.now()));
 
   List<bool> _isSelected = [true, false];
 
@@ -43,7 +45,7 @@ class _AddTransactionState extends State<AddTransaction> {
                 ),
               ),
               TextFormField(
-                //controller: _amountController,
+                controller: _nameController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Name',
@@ -77,6 +79,7 @@ class _AddTransactionState extends State<AddTransaction> {
                       child: Padding(
                         padding: const EdgeInsets.only(left: 8.0),
                         child: TextFormField(
+                          controller: _amountController,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             hintText: 'Amount',
@@ -101,13 +104,27 @@ class _AddTransactionState extends State<AddTransaction> {
               FancyButtonWidget(
                   text: 'Add more details',
                   onPressed: () {
-                    Navigator.push(
+                    var tr = Transaction(amount: int.parse(_amountController.text), name: _nameController.text, date: DateTime.now());
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AddTransactionDetail(),
+                        builder: (context) => AddTransactionDetail(tr:tr),
                       ),
                     );
-                  }),
+                  },
+              ),
+
+              FancyButtonWidget(
+                text: 'Add'.toUpperCase(),
+                onPressed: () {
+
+                  var tr = Transaction(amount: int.parse(_amountController.text) * (_isSelected[1] ? -1 : 1), name: _nameController.text, date: DateTime.now());
+
+                  Provider.of<TransactionModel>(context, listen: false).addTransaction(tr);
+                  Navigator.pop(context);
+                },
+              ),
+
             ],
           )
 

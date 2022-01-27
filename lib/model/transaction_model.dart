@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hive/hive.dart';
 
 class TransactionModel extends ChangeNotifier {
   final List<Transaction> _list = [
@@ -68,13 +69,25 @@ class TransactionModel extends ChangeNotifier {
   }
 }
 
+@HiveType(typeId: 0)
 class Transaction {
+  @HiveField(0)
   int amount = 0;
+
+  @HiveField(1)
   String name = "";
+
+  @HiveField(2)
   DateTime date = DateTime.now();
+
+  @HiveField(3)
   String note =
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+
+  @HiveField(4)
   LatLng place = LatLng(45.521563, -122.677433);
+
+  @HiveField(5)
   List<String> people = ['Peter', 'Bali', 'Pea'];
 
   Transaction({required this.amount, required this.name, required this.date});
