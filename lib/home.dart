@@ -93,7 +93,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             //print("Yey");
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const AddTransaction()),
+              MaterialPageRoute(builder: (context) => AddTransaction()),
             );
           },
           backgroundColor: Colors.red,

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:money_manager_app/add_transaction_detailed.dart';
+import 'package:money_manager_app/components/amount_input_widget.dart';
+import 'package:money_manager_app/components/fancy_button_windget.dart';
 import 'package:provider/provider.dart';
 
 import 'bottom_navbar_widget.dart';
@@ -8,8 +11,17 @@ import 'model/transaction_model.dart';
 
 var currentcyFormatter = NumberFormat('#,##0', 'hu_HU');
 
-class AddTransaction extends StatelessWidget {
-  const AddTransaction({Key? key}) : super(key: key);
+class AddTransaction extends StatefulWidget {
+  AddTransaction({Key? key}) : super(key: key);
+
+  @override
+  State<AddTransaction> createState() => _AddTransactionState();
+}
+
+class _AddTransactionState extends State<AddTransaction> {
+  TextEditingController _amountController = TextEditingController(text: "0");
+
+  List<bool> _isSelected = [true, false];
 
   @override
   Widget build(BuildContext context) {
@@ -18,33 +30,97 @@ class AddTransaction extends StatelessWidget {
         backgroundColor: Colors.red,
         title: const Text('MONGER - The money manager'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: TextFormField(
-          decoration: const InputDecoration(
-            hintText: 'Amount',
+      body: Container(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Container(
+                margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                child: const Text(
+                  'Add new transaction:',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ),
+              TextFormField(
+                //controller: _amountController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Name',
+                ),
+                autofocus: true,
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a transaction name';
+                  }
+                  return null;
+                },
+                style: const TextStyle(fontSize: 20),
+              ),
+              Container(
+                height: 75,
+                child: Row(
+                  children: [
+                    ToggleButtons(
+                      children: const [Icon(Icons.add), Icon(Icons.remove)],
+                      onPressed: (int index) {
+                        setState(() {
+                          _isSelected = [false, false];
+                          _isSelected[index] = true;
+                        });
+                      },
+                      isSelected: _isSelected,
+                      selectedColor: Colors.white,
+                      fillColor: Colors.red,
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: TextFormField(
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'Amount',
+                          ),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          validator: (String? value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter an amount';
+                            }
+                            return null;
+                          },
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              FancyButtonWidget(
+                  text: 'Add more details',
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AddTransactionDetail(),
+                      ),
+                    );
+                  }),
+            ],
+          )
+
+          //  Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          //Container(
+          //  margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+          //  child: const Text("Add a new transaction:",
+          //      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+          //),
+          //_InputForm()
+          //],
+          //),
           ),
-          autofocus: true,
-          keyboardType: TextInputType.number,
-          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-          validator: (String? value) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter an amount';
-            }
-            return null;
-          },
-          style: TextStyle(fontSize: 40),
-        ),
-        //  Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        //Container(
-        //  margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-        //  child: const Text("Add a new transaction:",
-        //      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
-        //),
-        //_InputForm()
-        //],
-        //),
-      ),
     );
   }
 

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:money_manager_app/current_balance_widget.dart';
+import 'package:money_manager_app/components/current_balance_widget.dart';
 
 import 'test_env.dart';
 
