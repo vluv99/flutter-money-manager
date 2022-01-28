@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:money_manager_app/add_transaction.dart';
 import 'package:money_manager_app/model/transaction_model.dart';
-import 'package:money_manager_app/transaction_detail.dart';
+
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart';
-
-import 'bottom_navbar_widget.dart';
 
 import 'components/current_balance_widget.dart';
-import 'components/fancy_button_windget.dart';
 import 'components/transaction_card_widget.dart';
 import 'list_transactions.dart';
 

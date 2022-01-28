@@ -47,6 +47,8 @@ dependencies:
   # database
   hive: ^2.0.4
   hive_flutter: ^1.1.0
+  hive_generator: ^1.1.2
+  build_runner: ^2.0.5
 
   #grouped_list: ^4.1.0
   auto_size_text: ^3.0.0

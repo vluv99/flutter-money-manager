@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hive/hive.dart';
+import 'package:money_manager_app/model/transaction.dart';
 
 class TransactionModel extends ChangeNotifier {
   final List<Transaction> _list = [
@@ -37,15 +38,19 @@ class TransactionModel extends ChangeNotifier {
   ];
 
   int get currentAmount {
+    var b = Hive.box<Transaction>(Transaction.DB);
     int amount = 0;
-    for (var item in _list) {
+    for (var item in b.values) {
       amount += item.amount;
     }
     return amount;
   }
 
   UnmodifiableListView<Transaction> get list {
-    var l = List<Transaction>.from(_list);
+
+    var b = Hive.box<Transaction>(Transaction.DB);
+    var l = b.values.toList();
+    //var l = List<Transaction>.from(_list);
     l.sort((a, b) {
       return 1 - a.date.compareTo(b.date);
     });
@@ -54,7 +59,9 @@ class TransactionModel extends ChangeNotifier {
   }
 
   void addTransaction(Transaction trans) {
-    _list.add(trans);
+    var b = Hive.box<Transaction>(Transaction.DB);
+    b.add(trans);
+    //_list.add(trans);
     notifyListeners();
   }
 
@@ -69,29 +76,4 @@ class TransactionModel extends ChangeNotifier {
   }
 }
 
-@HiveType(typeId: 0)
-class Transaction {
-  @HiveField(0)
-  int amount = 0;
 
-  @HiveField(1)
-  String name = "";
-
-  @HiveField(2)
-  DateTime date = DateTime.now();
-
-  @HiveField(3)
-  String note =
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
-
-  @HiveField(4)
-  LatLng place = LatLng(45.521563, -122.677433);
-
-  @HiveField(5)
-  List<String> people = ['Peter', 'Bali', 'Pea'];
-
-  Transaction({required this.amount, required this.name, required this.date});
-
-  // put this here, to try list people in the details
-  UnmodifiableListView<String> get list => UnmodifiableListView(people);
-}

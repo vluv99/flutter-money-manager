@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:intl/intl.dart';
+import 'package:money_manager_app/model/transaction.dart';
 import 'package:money_manager_app/model/transaction_model.dart';
 import 'package:money_manager_app/transaction_detail.dart';
 

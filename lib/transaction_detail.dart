@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import 'bottom_navbar_widget.dart';
+import 'model/transaction.dart';
 import 'model/transaction_model.dart';
 
 var dateFormat = new DateFormat('yyyy.MM.dd HH:mm');

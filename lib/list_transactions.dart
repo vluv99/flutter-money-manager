@@ -6,6 +6,7 @@ import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 
 import 'bottom_navbar_widget.dart';
 import 'components/transaction_card_widget.dart';
+import 'model/transaction.dart';
 import 'model/transaction_model.dart';
 
 var dateFormat = new DateFormat('yyyy.MM.dd HH:mm');
@@ -37,7 +38,7 @@ class TransactionsPage extends StatelessWidget {
         return StickyGroupedListView<Transaction, int>(
           elements: list,
           groupBy: (tr) => tr.date.month,
-          order: StickyGroupedListOrder.DESC,
+          order: StickyGroupedListOrder.ASC,
           groupSeparatorBuilder: (Transaction element) => _listHeader(element),
           itemBuilder: (context, element) =>
               TransactionCardWidget(transaction: element),

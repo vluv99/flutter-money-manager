@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:money_manager_app/add_transaction.dart';
+
 import 'package:money_manager_app/home.dart';
-import 'package:money_manager_app/list_transactions.dart';
+
+import 'package:money_manager_app/model/transaction.dart';
 import 'package:money_manager_app/model/transaction_model.dart';
-import 'package:money_manager_app/transaction_detail.dart';
+
 import 'package:provider/provider.dart';
 
-void main() {
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+void main() async {
+  await Hive.initFlutter();
+  Hive.registerAdapter(TransactionAdapter());
+  await Hive.openBox<Transaction>('transactions');
+
   runApp(const MongerApp());
 }
 

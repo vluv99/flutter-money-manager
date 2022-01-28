@@ -7,6 +7,7 @@ import 'package:money_manager_app/components/fancy_button_windget.dart';
 import 'package:provider/provider.dart';
 
 import 'bottom_navbar_widget.dart';
+import 'model/transaction.dart';
 import 'model/transaction_model.dart';
 
 var dateFormat = DateFormat('yyyy.MM.dd HH:mm');
