@@ -25,6 +25,7 @@ class FancyButtonWidget extends StatelessWidget {
                 children: [
                   Positioned.fill(
                     child: Container(
+                      padding: EdgeInsets.all(5),
                       decoration: const BoxDecoration(
                         gradient: LinearGradient(
                           colors: <Color>[

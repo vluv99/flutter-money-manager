@@ -8,7 +8,7 @@ class TestEnvironment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: child,
+      home:  Scaffold(body: child),
     );
   }
 }

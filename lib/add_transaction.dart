@@ -22,7 +22,8 @@ class AddTransaction extends StatefulWidget {
 
 class _AddTransactionState extends State<AddTransaction> {
   TextEditingController _amountController = TextEditingController(text: "0");
-  TextEditingController _nameController = TextEditingController(text: "Expense on - " + dateFormat.format(DateTime.now()));
+  TextEditingController _nameController = TextEditingController(
+      text: "Expense on - " + dateFormat.format(DateTime.now()));
 
   List<bool> _isSelected = [true, false];
 
@@ -102,7 +103,23 @@ class _AddTransactionState extends State<AddTransaction> {
                   ],
                 ),
               ),
-              FancyButtonWidget(
+              TextButton(
+                onPressed: () {
+                  var tr = Transaction(
+                      amount: int.parse(_amountController.text),
+                      name: _nameController.text,
+                      date: DateTime.now());
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddTransactionDetail(tr: tr),
+                    ),
+                  );
+                },
+                child: const Text('Add more details',
+                    style: TextStyle(color: Colors.red)),
+              ),
+              /*FancyButtonWidget(
                   text: 'Add more details',
                   onPressed: () {
                     var tr = Transaction(amount: int.parse(_amountController.text), name: _nameController.text, date: DateTime.now());
@@ -113,19 +130,37 @@ class _AddTransactionState extends State<AddTransaction> {
                       ),
                     );
                   },
-              ),
+              ),*/
 
-              FancyButtonWidget(
-                text: 'Add'.toUpperCase(),
+              TextButton(
                 onPressed: () {
+                  var tr = Transaction(
+                      amount: int.parse(_amountController.text) *
+                          (_isSelected[1] ? -1 : 1),
+                      name: _nameController.text,
+                      date: DateTime.now());
 
-                  var tr = Transaction(amount: int.parse(_amountController.text) * (_isSelected[1] ? -1 : 1), name: _nameController.text, date: DateTime.now());
-
-                  Provider.of<TransactionModel>(context, listen: false).addTransaction(tr);
+                  Provider.of<TransactionModel>(context, listen: false)
+                      .addTransaction(tr);
                   Navigator.pop(context);
                 },
+                child: const Text('ADD',
+                    style: TextStyle(color: Colors.red)),
               ),
+              /*FancyButtonWidget(
+                text: 'Add'.toUpperCase(),
+                onPressed: () {
+                  var tr = Transaction(
+                      amount: int.parse(_amountController.text) *
+                          (_isSelected[1] ? -1 : 1),
+                      name: _nameController.text,
+                      date: DateTime.now());
 
+                  Provider.of<TransactionModel>(context, listen: false)
+                      .addTransaction(tr);
+                  Navigator.pop(context);
+                },
+              ),*/
             ],
           )
 
