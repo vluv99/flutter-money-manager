@@ -10,6 +10,8 @@ import 'package:provider/provider.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import 'util/transaction_model_mock.dart';
+
 void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(TransactionAdapter());
@@ -23,8 +25,8 @@ class MongerApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => TransactionModel(),
+    return ChangeNotifierProvider<TransactionModel>(
+      create: (context) => TransactionModelMock(),
       child: const MaterialApp(
         title: 'Navigation Basics',
         home: HomePage(),

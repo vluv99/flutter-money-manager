@@ -9,9 +9,6 @@ import 'components/current_balance_widget.dart';
 import 'components/transaction_card_widget.dart';
 import 'list_transactions.dart';
 
-var dateFormat = DateFormat('yyyy.MM.dd HH:mm');
-var currentcyFormatter = NumberFormat('#,##0', 'hu_HU');
-int _currentAmount = 0;
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -95,6 +92,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           backgroundColor: Colors.red,
           child: Icon(Icons.add)),
     );
+  }
+
+
+  @override
+  void dispose() {
+    _controller.dispose();
+
+    super.dispose();
   }
 
   Widget _Transactions() {

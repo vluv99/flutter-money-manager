@@ -261,7 +261,7 @@ class _AddTransactionDetailState extends State<AddTransactionDetail> {
                         final XFile? image = await _picker.pickImage(source: ImageSource.camera);
                         if(image != null) {
                           setState(() {
-                            transaction.imagePath = image!.path;
+                            transaction.imagePath = image.path;
                           });
                         }
                       },
