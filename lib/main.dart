@@ -25,8 +25,8 @@ class MongerApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<TransactionModel>(
-      create: (context) => TransactionModelMock(),
+    return ChangeNotifierProvider/*<TransactionModel>*/(
+      create: (context) => TransactionModel/*Mock*/(),
       child: const MaterialApp(
         title: 'Navigation Basics',
         home: HomePage(),

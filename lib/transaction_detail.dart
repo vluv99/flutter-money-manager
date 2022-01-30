@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -11,10 +13,17 @@ import 'model/transaction_model.dart';
 var dateFormat = new DateFormat('yyyy.MM.dd HH:mm');
 var currentcyFormatter = NumberFormat('#,##0', 'hu_HU');
 
-class TransactionDetailsPage extends StatelessWidget {
+class TransactionDetailsPage extends StatefulWidget {
   Transaction t;
 
   TransactionDetailsPage({Key? key, required this.t}) : super(key: key);
+
+  @override
+  State<TransactionDetailsPage> createState() => _TransactionDetailsPageState();
+}
+
+class _TransactionDetailsPageState extends State<TransactionDetailsPage> {
+  Completer<GoogleMapController> _controller = Completer();
 
   @override
   Widget build(BuildContext context) {
@@ -26,14 +35,16 @@ class TransactionDetailsPage extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child:
-            Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+            SingleChildScrollView(
+              child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           Container(
-            margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-            child: const Text("Trasaction details:",
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700)),
+              margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: const Text("Trasaction details:",
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700)),
           ),
           _Transaction()
         ]),
+            ),
       ),
       /*bottomNavigationBar: BottomNavbarWidget(
             index: ,
@@ -45,11 +56,10 @@ class TransactionDetailsPage extends StatelessWidget {
     return Consumer<TransactionModel>(
       builder: (context, model, child) {
         //return Text("test spending count: ${model.list.length}");
-        Transaction transaction =
-            t; //TransactionModel().getSingleTransaction(-8542, 'Spar Supermarket', DateTime(2021, 10, 10, 11, 09));
+        Transaction transaction = widget
+            .t; //TransactionModel().getSingleTransaction(-8542, 'Spar Supermarket', DateTime(2021, 10, 10, 11, 09));
 
-        return Flexible(
-            child: Column(
+        return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (transaction.imagePath != null)
@@ -64,11 +74,12 @@ class TransactionDetailsPage extends StatelessWidget {
                 ),
               ),
             /*Image.network(
-                      'https://staticmapmaker.com/img/google.png')),
-            ),*/
+                  'https://staticmapmaker.com/img/google.png')),
+        ),*/
+
             Text(transaction.name,
-                style:
-                    const TextStyle(fontSize: 22, fontWeight: FontWeight.w700)),
+                style: const TextStyle(
+                    fontSize: 22, fontWeight: FontWeight.w700)),
             Text(transaction.note, style: const TextStyle(fontSize: 18)),
             Container(
               margin: EdgeInsets.all(20),
@@ -92,28 +103,46 @@ class TransactionDetailsPage extends StatelessWidget {
                 ],
               ),
             ),
+
+            SizedBox(
+              height: 400,
+              child: GoogleMap(
+                mapType: MapType.hybrid,
+                initialCameraPosition: CameraPosition(
+                  target: LatLng(transaction.lat, transaction.lng),
+                  zoom: 14.4746,
+                ),
+                markers: {
+                  Marker(
+                      markerId: MarkerId('place'),
+                      draggable: false,
+                      position: LatLng(transaction.lat, transaction.lng))
+                },
+                onMapCreated: (GoogleMapController controller) {
+                  _controller.complete(controller);
+                },
+              ),
+            ),
+
             const Text(
               'With people:',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
             ),
-            /*Container(
-              margin: EdgeInsets.fromLTRB(0, 5, 5, 0),
-              child: Text('Peter', style: const TextStyle(fontSize: 18)),
-            ),*/
-            Expanded(
-              child: ListView.builder(
-                  itemCount: transaction.people.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      padding: const EdgeInsets.all(5),
-                      margin: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                      child: Text(transaction.people[index]),
-                      //child: Text(transaction.people[index]),
-                    );
-                  }),
-            )
+            ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: transaction.people.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Container(
+                    padding: const EdgeInsets.all(5),
+                    margin: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                    child: Text(transaction.people[index]),
+                    //child: Text(transaction.people[index]),
+                  );
+                },
+            ),
           ],
-        ));
+        );
       },
     );
   }

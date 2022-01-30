@@ -15,6 +15,8 @@ import 'bottom_navbar_widget.dart';
 import 'model/transaction.dart';
 import 'model/transaction_model.dart';
 
+import 'package:place_picker/place_picker.dart';
+
 var dateFormat = DateFormat('yyyy.MM.dd HH:mm');
 var currentcyFormatter = NumberFormat('#,##0', 'hu_HU');
 
@@ -53,6 +55,18 @@ class _AddTransactionDetailState extends State<AddTransactionDetail> {
         .addTransaction(transaction);
 
     Navigator.pop(context);
+  }
+
+  Future<LocationResult> showPlacePicker() async {
+    LocationResult result = await Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => PlacePicker(
+              "",
+              displayLocation: LatLng(47.162494, 	19.503304),
+            )));
+
+    // Handle the result in your way
+    // print(result);
+    return result;
   }
 
   @override
@@ -126,7 +140,9 @@ class _AddTransactionDetailState extends State<AddTransactionDetail> {
                                 FilteringTextInputFormatter.digitsOnly
                               ],
                               validator: (String? value) {
-                                if (value == null || value == "0" || value.isEmpty) {
+                                if (value == null ||
+                                    value == "0" ||
+                                    value.isEmpty) {
                                   return 'Please enter an amount';
                                 }
                                 return null;
@@ -201,83 +217,106 @@ class _AddTransactionDetailState extends State<AddTransactionDetail> {
                   Container(
                     child: Column(
                       children: [
-                        Row(
-                          children:[
-                             const Text(
-                                 "With people",
-                                     style: TextStyle(
-                                       fontSize: 22
-                                     ),
-                             ),
-                             TextButton(
-                               onPressed: () async {
-                                 final PhoneContact contact =
-                                     await FlutterContactPicker.pickPhoneContact();
-                                 if(contact.fullName != null) {
-                                   setState(() {
-                                     transaction.people.add(contact.fullName!);
-                                   });
-                                 }
-                               },
-                                child: const Text("Add", style: TextStyle(color: Colors.red)),
-                              ),
-                          ]
-                        ),
+                        Row(children: [
+                          const Text(
+                            "With people",
+                            style: TextStyle(fontSize: 22),
+                          ),
+                          TextButton(
+                            onPressed: () async {
+                              final PhoneContact contact =
+                                  await FlutterContactPicker.pickPhoneContact();
+                              if (contact.fullName != null) {
+                                setState(() {
+                                  transaction.people.add(contact.fullName!);
+                                });
+                              }
+                            },
+                            child: const Text("Add",
+                                style: TextStyle(color: Colors.red)),
+                          ),
+                        ]),
                         ListView.builder(
                           shrinkWrap: true,
-                            itemCount: transaction.people.length,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                child: Row(
-                                  children: [
-                                    Text(transaction.people[index]),
-                                    const Spacer(),
-                                    TextButton(
-                                      child: const Icon(Icons.close, color: Colors.red,),
-                                      onPressed: (){
-                                        setState((){
-                                          transaction.people.removeAt(index);
-                                        });
-                                      },
-                                    )
-                                  ],
-                                ),
-                              );
-                            },
+                          itemCount: transaction.people.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              child: Row(
+                                children: [
+                                  Text(transaction.people[index]),
+                                  const Spacer(),
+                                  TextButton(
+                                    child: const Icon(
+                                      Icons.close,
+                                      color: Colors.red,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        transaction.people.removeAt(index);
+                                      });
+                                    },
+                                  )
+                                ],
+                              ),
+                            );
+                          },
                         )
                       ],
                     ),
                   ),
+
+                  Row(
+                    children: [
+                      const Text("Location", style: TextStyle(fontSize: 22)),
+                      TextButton(
+                          onPressed: () async{
+                            var place = await showPlacePicker();
+
+                            if (place != null) {
+                              setState(() {
+                                transaction.lat = place.latLng.latitude;
+                                transaction.lng = place.latLng.longitude;
+                              });
+                            }
+                          },
+                          child: const Icon(Icons.add_location,
+                              color: Colors.red)),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Text(transaction.lat.toString()),
+                      Text(transaction.lng.toString())
+                    ],
+                  ),
+
                   //FancyButtonWidget(text: 'Add more details', onPressed: (){})
                   Row(
                     children: [
-                      const Text("Add image", style: TextStyle(
-                          fontSize: 22
-                      )),
+                      const Text("Add image", style: TextStyle(fontSize: 22)),
                       TextButton(
                           onPressed: () async {
-                        final ImagePicker _picker = ImagePicker();
-                        // Pick an image
-                        final XFile? image = await _picker.pickImage(source: ImageSource.camera);
-                        if(image != null) {
-                          setState(() {
-                            transaction.imagePath = image.path;
-                          });
-                        }
-                      },
-                          child: const Icon(Icons.camera_alt_outlined , color: Colors.red)),
+                            final ImagePicker _picker = ImagePicker();
+                            // Pick an image
+                            final XFile? image = await _picker.pickImage(
+                                source: ImageSource.camera);
+                            if (image != null) {
+                              setState(() {
+                                transaction.imagePath = image.path;
+                              });
+                            }
+                          },
+                          child: const Icon(Icons.camera_alt_outlined,
+                              color: Colors.red)),
                     ],
                   ),
-                  if(transaction.imagePath != null)
+                  if (transaction.imagePath != null)
                     Image.file(File(transaction.imagePath!)),
-
-
-
-
 
                   TextButton(
                     onPressed: () => _saveTransaction(context),
-                    child: const Text("ADD", style: TextStyle(color: Colors.red)),
+                    child:
+                        const Text("ADD", style: TextStyle(color: Colors.red, fontSize: 22)),
                   )
                 ],
               ),
