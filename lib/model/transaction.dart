@@ -29,7 +29,11 @@ class Transaction {
   double lng = -122.677433;
 
   @HiveField(6)
-  List<String> people = ['Peter', 'Bali', 'Pea'];
+  List<String> people = [];//['Peter', 'Bali', 'Pea'];
+
+
+  @HiveField(7)
+  String? imagePath;
 
   Transaction({required this.amount, required this.name, required this.date});
 

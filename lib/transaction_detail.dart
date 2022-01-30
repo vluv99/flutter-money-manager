@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -50,14 +52,20 @@ class TransactionDetailsPage extends StatelessWidget {
             child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              margin: EdgeInsets.fromLTRB(0, 5, 0, 20),
-              alignment: Alignment.center,
-              child: Padding(
+            if (transaction.imagePath != null)
+              Container(
+                margin: EdgeInsets.fromLTRB(0, 5, 0, 20),
+                alignment: Alignment.center,
+                child: Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: Image.network(
+                  child: Image.file(
+                    File(transaction.imagePath!),
+                  ),
+                ),
+              ),
+            /*Image.network(
                       'https://staticmapmaker.com/img/google.png')),
-            ),
+            ),*/
             Text(transaction.name,
                 style:
                     const TextStyle(fontSize: 22, fontWeight: FontWeight.w700)),
