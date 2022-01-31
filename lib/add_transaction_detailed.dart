@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:money_manager_app/components/amount_input_widget.dart';
 import 'package:money_manager_app/components/fancy_button_windget.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
@@ -42,6 +43,12 @@ class _AddTransactionDetailState extends State<AddTransactionDetail> {
   late Transaction transaction;
 
   _AddTransactionDetailState({required this.transaction});
+
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+
+    return directory.path;
+  }
 
   void _saveTransaction(BuildContext context) {
     if (!_formKey.currentState!.validate()) {
@@ -301,8 +308,17 @@ class _AddTransactionDetailState extends State<AddTransactionDetail> {
                             final XFile? image = await _picker.pickImage(
                                 source: ImageSource.camera);
                             if (image != null) {
+                              final path = await _localPath;
+                              var name = image.name;
+
+                              var file = File(image.path);
+                              var dir = Directory('$path/images/');
+                              await dir.create(recursive: true);
+
+                              var newFile = await file.copy('$path/images/$name');
+
                               setState(() {
-                                transaction.imagePath = image.path;
+                                transaction.imagePath = newFile.path;
                               });
                             }
                           },

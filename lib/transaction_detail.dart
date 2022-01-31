@@ -34,17 +34,17 @@ class _TransactionDetailsPageState extends State<TransactionDetailsPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child:
-            SingleChildScrollView(
-              child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          Container(
+        child: SingleChildScrollView(
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+            Container(
               margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: const Text("Trasaction details:",
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700)),
-          ),
-          _Transaction()
-        ]),
             ),
+            _Transaction()
+          ]),
+        ),
       ),
       /*bottomNavigationBar: BottomNavbarWidget(
             index: ,
@@ -78,8 +78,8 @@ class _TransactionDetailsPageState extends State<TransactionDetailsPage> {
         ),*/
 
             Text(transaction.name,
-                style: const TextStyle(
-                    fontSize: 22, fontWeight: FontWeight.w700)),
+                style:
+                    const TextStyle(fontSize: 22, fontWeight: FontWeight.w700)),
             Text(transaction.note, style: const TextStyle(fontSize: 18)),
             Container(
               margin: EdgeInsets.all(20),
@@ -103,7 +103,6 @@ class _TransactionDetailsPageState extends State<TransactionDetailsPage> {
                 ],
               ),
             ),
-
             SizedBox(
               height: 400,
               child: GoogleMap(
@@ -123,23 +122,23 @@ class _TransactionDetailsPageState extends State<TransactionDetailsPage> {
                 },
               ),
             ),
-
-            const Text(
-              'With people:',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-            ),
+            if (transaction.people.isNotEmpty)
+              const Text(
+                'With people:',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+              ),
             ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: transaction.people.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    padding: const EdgeInsets.all(5),
-                    margin: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                    child: Text(transaction.people[index]),
-                    //child: Text(transaction.people[index]),
-                  );
-                },
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: transaction.people.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  padding: const EdgeInsets.all(5),
+                  margin: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                  child: Text(transaction.people[index]),
+                  //child: Text(transaction.people[index]),
+                );
+              },
             ),
           ],
         );
