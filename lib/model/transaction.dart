@@ -19,14 +19,14 @@ class Transaction {
   DateTime date = DateTime.now();
 
   @HiveField(3)
-  String note =
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+  String note = "";
+      //"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
 
   @HiveField(4)
-  double lat = 45.521563;
+  double lat = 47.4979;
 
   @HiveField(5)
-  double lng = -122.677433;
+  double lng = 19.0402;
 
   @HiveField(6)
   List<String> people = [];//['Peter', 'Bali', 'Pea'];

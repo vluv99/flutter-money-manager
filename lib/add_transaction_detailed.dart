@@ -4,11 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+
 import 'package:money_manager_app/components/amount_input_widget.dart';
 import 'package:money_manager_app/components/fancy_button_windget.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:place_picker/entities/location_result.dart';
+import 'package:place_picker/widgets/place_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
@@ -16,7 +20,7 @@ import 'bottom_navbar_widget.dart';
 import 'model/transaction.dart';
 import 'model/transaction_model.dart';
 
-import 'package:place_picker/place_picker.dart';
+//import 'package:place_picker/place_picker.dart';
 
 var dateFormat = DateFormat('yyyy.MM.dd HH:mm');
 var currentcyFormatter = NumberFormat('#,##0', 'hu_HU');
@@ -68,8 +72,9 @@ class _AddTransactionDetailState extends State<AddTransactionDetail> {
     LocationResult result = await Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => PlacePicker(
               "",
-              displayLocation: LatLng(47.162494, 	19.503304),
+              displayLocation: const LatLng(47.4979, 	19.0402),
             )));
+
 
     // Handle the result in your way
     // print(result);
@@ -293,6 +298,7 @@ class _AddTransactionDetailState extends State<AddTransactionDetail> {
                   Row(
                     children: [
                       Text(transaction.lat.toString()),
+                      Text(" - "),
                       Text(transaction.lng.toString())
                     ],
                   ),
